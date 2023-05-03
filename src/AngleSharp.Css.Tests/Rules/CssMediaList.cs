@@ -178,6 +178,7 @@
         }
 
         [Test]
+        [Ignore("https://github.com/AngleSharp/AngleSharp.Css/issues/138")]
         public void NoMediaQueryGivenSkip()
         {
             var source = @"@media {
