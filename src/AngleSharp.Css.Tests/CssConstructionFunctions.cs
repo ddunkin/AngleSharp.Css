@@ -11,7 +11,7 @@ namespace AngleSharp.Css.Tests
     {
         internal static IHtmlDocument ParseDocument(String source, CssParserOptions options = default)
         {
-            var context = BrowsingContext.New(Configuration.Default.WithCss(options));
+            var context = BrowsingContext.New(Configuration.Default.WithCss(options).WithRenderDevice(new DefaultRenderDevice()));
             var parser = context.GetService<IHtmlParser>();
             return parser.ParseDocument(source);
         }

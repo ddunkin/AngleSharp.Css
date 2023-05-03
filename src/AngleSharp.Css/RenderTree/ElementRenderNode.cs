@@ -1,3 +1,4 @@
+#nullable enable
 namespace AngleSharp.Css.RenderTree
 {
     using AngleSharp.Css.Dom;
@@ -7,12 +8,20 @@ namespace AngleSharp.Css.RenderTree
 
     class ElementRenderNode : IRenderElement
     {
-        public INode Ref { get; set; }
+        public ElementRenderNode(INode reference, IEnumerable<IRenderNode> children, ICssStyleDeclaration specifiedStyle, ICssStyleDeclaration computedStyle)
+        {
+            Ref = reference;
+            Children = children;
+            SpecifiedStyle = specifiedStyle;
+            ComputedStyle = computedStyle;
+        }
 
-        public IEnumerable<IRenderNode> Children { get; set; } = Enumerable.Empty<IRenderNode>();
+        public INode Ref { get; }
 
-        public ICssStyleDeclaration SpecifiedStyle { get; set; }
+        public IEnumerable<IRenderNode> Children { get; }
 
-        public ICssStyleDeclaration ComputedStyle { get; set; }
+        public ICssStyleDeclaration SpecifiedStyle { get; }
+
+        public ICssStyleDeclaration ComputedStyle { get; }
     }
 }

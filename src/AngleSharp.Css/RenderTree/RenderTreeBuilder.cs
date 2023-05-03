@@ -1,3 +1,4 @@
+#nullable enable
 namespace AngleSharp.Css.RenderTree
 {
     using AngleSharp.Css.Dom;
@@ -14,12 +15,12 @@ namespace AngleSharp.Css.RenderTree
         private readonly IEnumerable<ICssStyleSheet> _defaultSheets;
         private readonly IRenderDevice _device;
 
-        public RenderTreeBuilder(IWindow window, IRenderDevice device = null)
+        public RenderTreeBuilder(IWindow window, IRenderDevice? device = null)
         {
             var ctx = window.Document.Context;
             var defaultStyleSheetProvider = ctx.GetServices<ICssDefaultStyleSheetProvider>();
             _context = ctx;
-            _device = device ?? ctx.GetService<IRenderDevice>();
+            _device = device ?? ctx.GetService<IRenderDevice>() ?? throw new ArgumentNullException(nameof(device));
             _defaultSheets = defaultStyleSheetProvider.Select(m => m.Default).Where(m => m != null);
             _window = window;
         }
@@ -35,7 +36,7 @@ namespace AngleSharp.Css.RenderTree
             return RenderElement(rootFontSize, document.DocumentElement, collection);
         }
 
-        private ElementRenderNode RenderElement(double rootFontSize, IElement reference, StyleCollection collection, ICssStyleDeclaration parent = null)
+        private ElementRenderNode RenderElement(double rootFontSize, IElement reference, StyleCollection collection, ICssStyleDeclaration? parent = null)
         {
             var style = collection.ComputeCascadedStyle(reference);
             var computedStyle = Compute(rootFontSize, style, parent);
@@ -57,21 +58,12 @@ namespace AngleSharp.Css.RenderTree
                 }
             }
 
-            return new ElementRenderNode
-            {
-                Ref = reference,
-                SpecifiedStyle = style,
-                ComputedStyle = computedStyle,
-                Children = children,
-            };
+            return new ElementRenderNode(reference, children, style, computedStyle);
         }
 
-        private IRenderNode RenderText(IText text) => new TextRenderNode
-        {
-            Ref = text,
-        };
+        private IRenderNode RenderText(IText text) => new TextRenderNode(text);
 
-        private CssStyleDeclaration Compute(Double rootFontSize, ICssStyleDeclaration style, ICssStyleDeclaration parentStyle)
+        private CssStyleDeclaration Compute(Double rootFontSize, ICssStyleDeclaration style, ICssStyleDeclaration? parentStyle)
         {
             var computedStyle = new CssStyleDeclaration(_context);
             var declarations = style.Select(property =>

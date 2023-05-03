@@ -1,3 +1,4 @@
+#nullable enable
 namespace AngleSharp.Css.RenderTree
 {
     using AngleSharp.Dom;
@@ -6,7 +7,12 @@ namespace AngleSharp.Css.RenderTree
 
     class TextRenderNode : IRenderNode
     {
-        public INode Ref { get; set; }
+        public TextRenderNode(INode reference)
+        {
+            Ref = reference;
+        }
+
+        public INode Ref { get; }
 
         public IEnumerable<IRenderNode> Children => Enumerable.Empty<IRenderNode>();
     }

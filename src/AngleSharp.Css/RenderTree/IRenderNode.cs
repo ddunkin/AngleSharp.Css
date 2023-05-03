@@ -1,3 +1,4 @@
+#nullable enable
 namespace AngleSharp.Css.RenderTree
 {
     using AngleSharp.Dom;
