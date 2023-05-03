@@ -66,13 +66,34 @@ namespace AngleSharp.Css.RenderTree
         private CssStyleDeclaration Compute(Double rootFontSize, ICssStyleDeclaration style, ICssStyleDeclaration? parentStyle)
         {
             var computedStyle = new CssStyleDeclaration(_context);
+            var fontSize = ((Length?) parentStyle?.GetProperty(PropertyNames.FontSize)?.RawValue)?.ToPixel(_device) ?? rootFontSize;
+            // compute font-size first because other properties may depend on it
+            if (style.GetProperty(PropertyNames.FontSize) is { RawValue: not null } fontSizeProperty)
+            {
+                fontSize = GetFontSizeInPixels(fontSizeProperty.RawValue);
+            }
             var declarations = style.Select(property =>
             {
                 var name = property.Name;
                 var value = property.RawValue;
                 if (name == PropertyNames.FontSize)
                 {
-                    value = new Length(GetFontSizeInPixels(value), Length.Unit.Px);
+                    // font-size was already computed
+                    value = new Length(fontSize, Length.Unit.Px);
+                }
+                else if (value is Length { IsAbsolute: true, Type: not Length.Unit.Px } absoluteLength)
+                {
+                    value = new Length(absoluteLength.ToPixel(_device), Length.Unit.Px);
+                }
+                else if (value is Length { IsRelative: true } relativeLength)
+                {
+                    var pixelValue = relativeLength.Type switch
+                    {
+                        Length.Unit.Em => relativeLength.Value * fontSize,
+                        Length.Unit.Rem => relativeLength.Value * rootFontSize,
+                        _ => relativeLength.ToPixel(_device),
+                    };
+                    value = new Length(pixelValue, Length.Unit.Px);
                 }
 
                 return new CssProperty(name, property.Converter, property.Flags, value, property.IsImportant);

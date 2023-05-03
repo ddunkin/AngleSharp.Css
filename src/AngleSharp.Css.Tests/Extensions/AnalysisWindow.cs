@@ -305,15 +305,18 @@ p { font-size: 12pt; }
 em { font-style: italic !important; }
 .red { margin: 5px; }
 .big { font-size: larger; }
+.huge { font-size: 5em; }
 </style>
 <style>
 #text { font-style: normal; margin: 0; }
+#box { height: 1em; width: 1em; background-color: red; }
 </style>
 </head>
 <body>
 <div><p><span class=bold>Bold <em style='color: red' class=red id=text>text</em></span></p></div>
 <div class=big id=big1>big1<div id=big2>big2</div></div>
-<div class=big><div class=big id=big3>big3</div></div>";
+<div class=big><div class=big id=big3>big3</div></div>
+<div class=huge><div id=box></div><span id=text2>text</span></div>";
 
             var document = ParseDocument(sourceCode);
             Assert.IsNotNull(document);
@@ -341,6 +344,11 @@ em { font-style: italic !important; }
             Assert.AreEqual("19.2px", renderRoot.QuerySelector("#big2").ComputedStyle.GetFontSize());
             Assert.AreEqual("larger", renderRoot.QuerySelector("#big3").SpecifiedStyle.GetFontSize());
             Assert.AreEqual("23.04px", renderRoot.QuerySelector("#big3").ComputedStyle.GetFontSize());
+
+            Assert.AreEqual("1em", renderRoot.QuerySelector("#box").SpecifiedStyle.GetWidth());
+            Assert.AreEqual("80px", renderRoot.QuerySelector("#box").ComputedStyle.GetWidth());
+            Assert.AreEqual("1em", renderRoot.QuerySelector("#box").SpecifiedStyle.GetHeight());
+            Assert.AreEqual("80px", renderRoot.QuerySelector("#box").ComputedStyle.GetHeight());
         }
     }
 }
