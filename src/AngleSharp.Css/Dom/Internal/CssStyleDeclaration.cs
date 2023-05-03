@@ -72,6 +72,12 @@ namespace AngleSharp.Css.Dom
 
         #endregion
 
+        #region Internal Properties
+
+        internal IBrowsingContext Context => _context;
+
+        #endregion
+
         #region Methods
 
         public ICssProperty GetProperty(String name)
@@ -275,7 +281,7 @@ namespace AngleSharp.Css.Dom
         {
             if (IsReadOnly)
                 throw new DomException(DomError.NoModificationAllowed);
-            
+
             if (!String.IsNullOrEmpty(propertyValue))
             {
                 if (priority == null || priority.Isi(CssKeywords.Important))

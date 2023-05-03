@@ -57,5 +57,9 @@ namespace AngleSharp.Css.Dom
         /// Gets if the property is a shorthand.
         /// </summary>
         Boolean IsShorthand { get; }
+
+        IValueConverter Converter { get; }
+
+        PropertyFlags Flags { get; }
     }
 }

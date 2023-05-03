@@ -71,6 +71,7 @@ namespace AngleSharp.Css.Dom
         /// <param name="style">The base (raw) style.</param>
         /// <param name="device">The device to use for the calculation.</param>
         /// <returns>A new style declaration with the existing or computed values.</returns>
+        [Obsolete("Use the Render method instead.")]
         public static ICssStyleDeclaration Compute(this ICssStyleDeclaration style, IRenderDevice device)
         {
             //TODO

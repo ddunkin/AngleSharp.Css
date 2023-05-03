@@ -5,7 +5,7 @@ namespace AngleSharp.Css.RenderTree
     using System.Collections.Generic;
     using System.Linq;
 
-    class ElementRenderNode : IRenderNode
+    class ElementRenderNode : IRenderElement
     {
         public INode Ref { get; set; }
 
@@ -14,9 +14,5 @@ namespace AngleSharp.Css.RenderTree
         public ICssStyleDeclaration SpecifiedStyle { get; set; }
 
         public ICssStyleDeclaration ComputedStyle { get; set; }
-
-        public RenderValues UsedValue { get; set; }
-
-        public RenderValues ActualValue { get; set; }
     }
 }

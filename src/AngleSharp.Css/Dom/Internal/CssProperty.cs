@@ -72,6 +72,10 @@ namespace AngleSharp.Css.Dom
 
         public String CssText => this.ToCss();
 
+        public IValueConverter Converter => _converter;
+
+        public PropertyFlags Flags => _flags;
+
         #endregion
 
         #region Internal Properties
@@ -79,8 +83,6 @@ namespace AngleSharp.Css.Dom
         internal Boolean CanBeHashless => (_flags & PropertyFlags.Hashless) == PropertyFlags.Hashless;
 
         internal Boolean CanBeUnitless => (_flags & PropertyFlags.Unitless) == PropertyFlags.Unitless;
-
-        internal IValueConverter Converter => _converter;
 
         #endregion
 

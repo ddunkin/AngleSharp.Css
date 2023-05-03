@@ -1,6 +1,7 @@
 namespace AngleSharp.Css.Tests.Extensions
 {
     using AngleSharp.Css.Dom;
+    using AngleSharp.Css.RenderTree;
     using AngleSharp.Dom;
     using NUnit.Framework;
     using System.Text;
@@ -143,11 +144,11 @@ namespace AngleSharp.Css.Tests.Extensions
             var sourceCode = @"<!doctype html>
 <head>
 <style>
-p > span { color: blue; } 
+p > span { color: blue; }
 span.bold { font-weight: bold; }
 </style>
 <style>
-p { font-size: 20px; }
+p { font-size: 12pt; }
 em { font-style: italic !important; }
 .red { margin: 5px; }
 </style>
@@ -178,7 +179,7 @@ em { font-style: italic !important; }
             Assert.AreEqual("rgba(255, 0, 0, 1)", style.GetColor());
             Assert.AreEqual("bold", style.GetFontWeight());
             Assert.AreEqual("italic", style.GetFontStyle());
-            Assert.AreEqual("20px", style.GetFontSize());
+            Assert.AreEqual("12pt", style.GetFontSize());
         }
 
         [Test]
@@ -288,6 +289,58 @@ em { font-style: italic !important; }
             var sc = new StyleCollection(new[] { sheet }, new DefaultRenderDevice());
             var decl = sc.ComputeCascadedStyle(document.Body);
             Assert.IsNotNull(decl);
+        }
+
+        [Test]
+        public void RenderComplexScenario()
+        {
+            var sourceCode = @"<!doctype html>
+<head>
+<style>
+p > span { color: blue; }
+span.bold { font-weight: bold; }
+</style>
+<style>
+p { font-size: 12pt; }
+em { font-style: italic !important; }
+.red { margin: 5px; }
+.big { font-size: larger; }
+</style>
+<style>
+#text { font-style: normal; margin: 0; }
+</style>
+</head>
+<body>
+<div><p><span class=bold>Bold <em style='color: red' class=red id=text>text</em></span></p></div>
+<div class=big id=big1>big1<div id=big2>big2</div></div>
+<div class=big><div class=big id=big3>big3</div></div>";
+
+            var document = ParseDocument(sourceCode);
+            Assert.IsNotNull(document);
+            var window = document.DefaultView;
+
+            var renderRoot = window.Render();
+            Assert.IsNotNull(renderRoot);
+
+            var textElement = renderRoot.QuerySelector("#text");
+            Assert.IsNotNull(textElement);
+
+            var textElementComputedStyle = textElement.ComputedStyle;
+
+            Assert.AreEqual(8, textElementComputedStyle.Length);
+
+            Assert.AreEqual("0", textElementComputedStyle.GetMargin());
+            Assert.AreEqual("rgba(255, 0, 0, 1)", textElementComputedStyle.GetColor());
+            Assert.AreEqual("bold", textElementComputedStyle.GetFontWeight());
+            Assert.AreEqual("italic", textElementComputedStyle.GetFontStyle());
+            Assert.AreEqual("16px", textElementComputedStyle.GetFontSize());
+
+            Assert.AreEqual("larger", renderRoot.QuerySelector("#big1").SpecifiedStyle.GetFontSize());
+            Assert.AreEqual("19.2px", renderRoot.QuerySelector("#big1").ComputedStyle.GetFontSize());
+            Assert.AreEqual("", renderRoot.QuerySelector("#big2").SpecifiedStyle.GetFontSize());
+            Assert.AreEqual("19.2px", renderRoot.QuerySelector("#big2").ComputedStyle.GetFontSize());
+            Assert.AreEqual("larger", renderRoot.QuerySelector("#big3").SpecifiedStyle.GetFontSize());
+            Assert.AreEqual("23.04px", renderRoot.QuerySelector("#big3").ComputedStyle.GetFontSize());
         }
     }
 }

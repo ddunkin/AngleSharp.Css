@@ -20,6 +20,7 @@ namespace AngleSharp.Css
         /// <summary>
         /// Gets the default font size in px.
         /// </summary>
+        [Obsolete("Use the computed font size of the document element instead.")]
         Double FontSize { get; }
     }
 }

@@ -20,7 +20,7 @@ namespace AngleSharp.Css.RenderTree
         /// Downloads the referenced resources from the node if visible.
         ///
         /// Included resources:
-        /// 
+        ///
         /// - Background images
         /// </summary>
         /// <param name="node">The node to use as a starting base.</param>
@@ -102,6 +102,24 @@ namespace AngleSharp.Css.RenderTree
             }
 
             return node;
+        }
+
+        public static IRenderElement QuerySelector(this IRenderNode node, String selector)
+        {
+            var selectedNode = node.Ref.Owner?.QuerySelector(selector);
+            return selectedNode is null ? null : node.GetDescendantsAndSelf().FirstOrDefault(n => n.Ref == selectedNode) as IRenderElement;
+        }
+
+        public static IEnumerable<IRenderNode> GetDescendantsAndSelf(this IRenderNode node)
+        {
+            yield return node;
+            foreach (var child in node.Children)
+            {
+                foreach (var descendant in child.GetDescendantsAndSelf())
+                {
+                    yield return descendant;
+                }
+            }
         }
     }
 }
