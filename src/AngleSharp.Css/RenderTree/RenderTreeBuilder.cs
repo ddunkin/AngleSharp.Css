@@ -89,6 +89,7 @@ namespace AngleSharp.Css.RenderTree
                 {
                     var pixelValue = relativeLength.Type switch
                     {
+                        Length.Unit.None when name == PropertyNames.LineHeight => relativeLength.Value * fontSize,
                         Length.Unit.Em => relativeLength.Value * fontSize,
                         Length.Unit.Rem => relativeLength.Value * rootFontSize,
                         _ => relativeLength.ToPixel(_device),
