@@ -272,9 +272,8 @@ namespace AngleSharp.Css.Values
         /// current unit is relative, then an exception will be thrown.
         /// </summary>
         /// <param name="renderDimensions">the render device used to calculate relative units, can be null if units are absolute.</param>
-        /// <param name="mode">Signifies the axis the unit represents, use to calculate relative units where the axis matters.</param>
         /// <returns>The number of pixels represented by the current length.</returns>
-        public Double ToPixel(IRenderDimensions renderDimensions, RenderMode mode)
+        public Double ToPixel(IRenderDimensions renderDimensions)
         {
             switch (_unit)
             {
@@ -290,12 +289,6 @@ namespace AngleSharp.Css.Values
                     return _value * 50.0 * 96.0 / 127.0;
                 case Unit.Px: // 1 px = 1/96 in
                     return _value;
-                case Unit.Percent:
-                    CheckForValidRenderDimensions(renderDimensions, mode);
-                    return _value * 0.01 * (mode == RenderMode.Horizontal ? renderDimensions.RenderWidth : renderDimensions.RenderHeight);
-                case Unit.Em:
-                    CheckForValidRenderDimensionsForFont(renderDimensions);
-                    return _value * renderDimensions.FontSize;
                 case Unit.Rem:
                     // here we dont actually know the root font size but currently the only IRenderDimensions used is
                     // the IRenderDevice meaning its always the root font size
@@ -320,17 +313,19 @@ namespace AngleSharp.Css.Values
             }
         }
 
+        [Obsolete("Use ToPixel(IRenderDimensions) instead.")]
+        public Double ToPixel(IRenderDimensions renderDimensions, RenderMode mode) => ToPixel(renderDimensions);
+
         /// <summary>
         /// Converts the length to the given unit, if possible. If the current
         /// or given unit is relative, then an exception will be thrown.
         /// </summary>
         /// <param name="unit">The unit to convert to.</param>
         /// <param name="renderDimensions">the render device used to calculate relative units, can be null if units are absolute.</param>
-        /// <param name="mode">Signifies the axis the unit represents, use to calculate relative units where the axis matters.</param>
         /// <returns>The value in the given unit of the current length.</returns>
-        public Double To(Unit unit, IRenderDimensions renderDimensions, RenderMode mode)
+        public Double To(Unit unit, IRenderDimensions renderDimensions)
         {
-            var value = ToPixel(renderDimensions, mode);
+            var value = ToPixel(renderDimensions);
 
             switch (unit)
             {
@@ -346,12 +341,6 @@ namespace AngleSharp.Css.Values
                     return value * 127.0 / (50.0 * 96.0);
                 case Unit.Px: // 1 px = 1/96 in
                     return value;
-                case Unit.Percent:
-                    CheckForValidRenderDimensions(renderDimensions, mode);
-                    return value / (mode == RenderMode.Horizontal ? renderDimensions.RenderWidth : renderDimensions.RenderHeight) * 100;
-                case Unit.Em:
-                    CheckForValidRenderDimensionsForFont(renderDimensions);
-                    return value / renderDimensions.FontSize;
                 case Unit.Rem:
                     // here we dont actually know the root font size but currently the only IRenderDimensions used is
                     // the IRenderDevice meaning its always the root font size
@@ -375,6 +364,9 @@ namespace AngleSharp.Css.Values
                     throw new InvalidOperationException("Unsupported unit cannot be converted.");
             }
         }
+
+        [Obsolete("Use To(Unit, IRenderDimensions) instead.")]
+        public Double To(Unit unit, IRenderDimensions renderDimensions, RenderMode mode) => To(unit, renderDimensions);
 
         private void CheckForValidRenderDimensions(IRenderDimensions renderDimensions, RenderMode mode)
         {

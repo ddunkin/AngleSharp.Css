@@ -39,37 +39,37 @@ namespace AngleSharp.Css.Tests.Values
         }
 
         [Test]
-        public void LengthToPixelsPercentThrowsOnInvalidRenderDimensions()
+        public void LengthToPixelsVhThrowsOnInvalidRenderDimensions()
         {
-            var l = new Length(50, Length.Unit.Percent);
+            var l = new Length(50, Length.Unit.Vh);
             var renderDevice = new DefaultRenderDevice();
             Assert.Throws<ArgumentException>(() => l.ToPixel(renderDevice, RenderMode.Undefined));
             Assert.Throws<ArgumentException>(() => l.ToPixel(null, RenderMode.Undefined));
         }
 
         [Test]
-        public void LengthToPixelsEmThrowsOnInvalidRenderDimensions()
+        public void LengthToPixelsRemThrowsOnInvalidRenderDimensions()
         {
-            var l = new Length(50, Length.Unit.Em);
+            var l = new Length(50, Length.Unit.Rem);
             var renderDevice = new DefaultRenderDevice { FontSize = 0 };
             Assert.Throws<ArgumentException>(() => l.ToPixel(renderDevice, RenderMode.Undefined));
             Assert.Throws<ArgumentException>(() => l.ToPixel(null, RenderMode.Undefined));
         }
 
         [Test]
-        public void LengthToPixelsCorrectPercentWidth()
+        public void LengthToPixelsPercentWidthThrows()
         {
             var l = new Length(50, Length.Unit.Percent);
             var renderDevice = new DefaultRenderDevice {ViewPortWidth = 500};
-            Assert.AreEqual(250, l.ToPixel(renderDevice, RenderMode.Horizontal));
+            Assert.Throws<InvalidOperationException>(() => l.ToPixel(renderDevice, RenderMode.Horizontal));
         }
 
         [Test]
-        public void LengthToPixelsCorrectPercentHeight()
+        public void LengthToPixelsPercentHeightThrows()
         {
             var l = new Length(25, Length.Unit.Percent);
             var renderDevice = new DefaultRenderDevice {ViewPortHeight = 600};
-            Assert.AreEqual(150, l.ToPixel(renderDevice, RenderMode.Vertical));
+            Assert.Throws<InvalidOperationException>(() => l.ToPixel(renderDevice, RenderMode.Vertical));
         }
 
         [Test]
@@ -81,11 +81,11 @@ namespace AngleSharp.Css.Tests.Values
         }
 
         [Test]
-        public void LengthToPixelsCorrectEm()
+        public void LengthToPixelsEmThrows()
         {
             var l = new Length(10, Length.Unit.Em);
             var renderDevice = new DefaultRenderDevice {FontSize = 10};
-            Assert.AreEqual(100, l.ToPixel(renderDevice, RenderMode.Undefined));
+            Assert.Throws<InvalidOperationException>(() => l.ToPixel(renderDevice, RenderMode.Undefined));
         }
 
         [Test]
@@ -129,19 +129,11 @@ namespace AngleSharp.Css.Tests.Values
         }
 
         [Test]
-        public void LengthToPercentCorrectWidth()
-        {
-            var l = new Length(100, Length.Unit.Px);
-            var renderDevice = new DefaultRenderDevice {ViewPortWidth = 500};
-            Assert.AreEqual(20, l.To(Length.Unit.Percent, renderDevice, RenderMode.Horizontal));
-        }
-
-        [Test]
-        public void LengthToPercentCorrectHeight()
+        public void LengthToPercentThrows()
         {
             var l = new Length(100, Length.Unit.Px);
             var renderDevice = new DefaultRenderDevice {ViewPortHeight = 1000};
-            Assert.AreEqual(10, l.To(Length.Unit.Percent, renderDevice, RenderMode.Vertical));
+            Assert.Throws<InvalidOperationException>(() => l.To(Length.Unit.Percent, renderDevice, RenderMode.Vertical));
         }
 
         [Test]
@@ -153,11 +145,11 @@ namespace AngleSharp.Css.Tests.Values
         }
 
         [Test]
-        public void LengthToEmCorrectValue()
+        public void LengthToEmThrows()
         {
             var l = new Length(1600, Length.Unit.Px);
             var renderDevice = new DefaultRenderDevice {FontSize = 16};
-            Assert.AreEqual(100, l.To(Length.Unit.Em, renderDevice, RenderMode.Undefined));
+            Assert.Throws<InvalidOperationException>(() => l.To(Length.Unit.Em, renderDevice, RenderMode.Undefined));
         }
 
         [Test]
