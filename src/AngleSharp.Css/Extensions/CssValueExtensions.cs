@@ -20,10 +20,6 @@ namespace AngleSharp.Css.Dom
             {
                 return length.Value;
             }
-            else if (value is Number number)
-            {
-                return number.Value;
-            }
             else if (value is Fraction fr)
             {
                 return fr.Value;
