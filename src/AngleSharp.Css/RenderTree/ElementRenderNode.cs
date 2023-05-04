@@ -4,11 +4,10 @@ namespace AngleSharp.Css.RenderTree
     using AngleSharp.Css.Dom;
     using AngleSharp.Dom;
     using System.Collections.Generic;
-    using System.Linq;
 
     class ElementRenderNode : IRenderElement
     {
-        public ElementRenderNode(INode reference, IEnumerable<IRenderNode> children, ICssStyleDeclaration specifiedStyle, ICssStyleDeclaration computedStyle)
+        public ElementRenderNode(IElement reference, IEnumerable<IRenderNode> children, ICssStyleDeclaration specifiedStyle, ICssStyleDeclaration computedStyle)
         {
             Ref = reference;
             Children = children;
@@ -16,7 +15,9 @@ namespace AngleSharp.Css.RenderTree
             ComputedStyle = computedStyle;
         }
 
-        public INode Ref { get; }
+        public IElement Ref { get; }
+
+        INode IRenderNode.Ref => Ref;
 
         public IEnumerable<IRenderNode> Children { get; }
 
