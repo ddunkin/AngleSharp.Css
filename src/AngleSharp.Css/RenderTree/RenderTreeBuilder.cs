@@ -79,7 +79,8 @@ namespace AngleSharp.Css.RenderTree
         private CssStyleDeclaration Compute(Double rootFontSize, ICssStyleDeclaration style, ICssStyleDeclaration? parentStyle)
         {
             var computedStyle = new CssStyleDeclaration(_context);
-            var fontSize = ((Length?) parentStyle?.GetProperty(PropertyNames.FontSize)?.RawValue)?.ToPixel(_device) ?? rootFontSize;
+            var parentFontSize = ((Length?) parentStyle?.GetProperty(PropertyNames.FontSize)?.RawValue)?.ToPixel(_device) ?? rootFontSize;
+            var fontSize = parentFontSize;
             // compute font-size first because other properties may depend on it
             if (style.GetProperty(PropertyNames.FontSize) is { RawValue: not null } fontSizeProperty)
             {
@@ -132,6 +133,8 @@ namespace AngleSharp.Css.RenderTree
 				    Length { IsAbsolute: true } length => length.ToPixel(_device),
 				    Length { Type: Length.Unit.Vh or Length.Unit.Vw or Length.Unit.Vmax or Length.Unit.Vmin } length => length.ToPixel(_device),
 				    Length { IsRelative: true } length => ComputeRelativeFontSize(length),
+                    ICssSpecialValue specialValue when specialValue.CssText == CssKeywords.Inherit || specialValue.CssText == CssKeywords.Unset => parentFontSize,
+                    ICssSpecialValue specialValue when specialValue.CssText == CssKeywords.Initial => rootFontSize,
 				    _ => throw new InvalidOperationException("Font size must be a length"),
 			    };
 

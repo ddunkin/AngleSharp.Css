@@ -392,5 +392,46 @@ em { font-style: italic !important; }
                 Assert.AreEqual("normal", renderRoot.QuerySelector("#text6").ComputedStyle.GetLineHeight());
             });
         }
+
+        [Test]
+        public void RenderFontSize()
+        {
+            var sourceCode = @"<!doctype html>
+<head>
+<style>
+.larger { font-size: 150%; }
+.xl { font-size: x-large; }
+</style>
+</head>
+<body>
+<div><span id=text1>text</span> <span class=xl id=text2>text</span></div>
+<div class=larger>
+<span id=text3>text</span>
+<span class=larger id=text4>text</span>
+<span style='font-size: 1.5rem' id=text5>text</span>
+<span style='font-size: inherit' id=text6>text</span>
+<span style='font-size: unset' id=text7>text</span>
+<span style='font-size: initial' id=text8>text</span>
+</div>";
+
+            var document = ParseDocument(sourceCode);
+            Assert.IsNotNull(document);
+            var window = document.DefaultView;
+
+            var renderRoot = window.Render();
+            Assert.IsNotNull(renderRoot);
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual("", renderRoot.QuerySelector("#text1").ComputedStyle.GetFontSize());
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text2").ComputedStyle.GetFontSize());
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text3").ComputedStyle.GetFontSize());
+                Assert.AreEqual("36px", renderRoot.QuerySelector("#text4").ComputedStyle.GetFontSize());
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text5").ComputedStyle.GetFontSize());
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text6").ComputedStyle.GetFontSize());
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text7").ComputedStyle.GetFontSize());
+                Assert.AreEqual("16px", renderRoot.QuerySelector("#text8").ComputedStyle.GetFontSize());
+            });
+        }
     }
 }
