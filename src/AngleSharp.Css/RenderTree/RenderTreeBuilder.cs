@@ -58,6 +58,19 @@ namespace AngleSharp.Css.RenderTree
                 }
             }
 
+            // compute unitless line-height after rendering children
+            if (computedStyle.GetProperty(PropertyNames.LineHeight).RawValue is Length { Type: Length.Unit.None } unitlessLineHeight)
+            {
+                var fontSize = computedStyle.GetProperty(PropertyNames.FontSize).RawValue is Length { Type: Length.Unit.Px } fontSizeLength ? fontSizeLength.Value : rootFontSize;
+                var pixelValue = unitlessLineHeight.Value * fontSize;
+                var computedLineHeight = new Length(pixelValue, Length.Unit.Px);
+
+                // create a new property because SetProperty would change the parent value
+                var lineHeightProperty = _context.CreateProperty(PropertyNames.LineHeight);
+                lineHeightProperty.RawValue = computedLineHeight;
+                computedStyle.SetDeclarations(new[] { lineHeightProperty });
+            }
+
             return new ElementRenderNode(reference, children, style, computedStyle);
         }
 
@@ -93,11 +106,6 @@ namespace AngleSharp.Css.RenderTree
                         Length.Unit.Rem => relativeLength.Value * rootFontSize,
                         _ => relativeLength.ToPixel(_device),
                     };
-                    value = new Length(pixelValue, Length.Unit.Px);
-                }
-                else if (name == PropertyNames.LineHeight && value is Length { Type: Length.Unit.None } unitlessLineHeight)
-                {
-                    var pixelValue = unitlessLineHeight.Value * fontSize;
                     value = new Length(pixelValue, Length.Unit.Px);
                 }
 

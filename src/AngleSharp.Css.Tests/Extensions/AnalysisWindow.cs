@@ -316,8 +316,7 @@ em { font-style: italic !important; }
 <div><p><span class=bold>Bold <em style='color: red' class=red id=text>text</em></span></p></div>
 <div class=big id=big1>big1<div id=big2>big2</div></div>
 <div class=big><div class=big id=big3>big3</div></div>
-<div class=huge><div id=box></div><span id=text2>text</span></div>
-<div style='line-height: 1.2'><span id=text3>text</span></div>";
+<div class=huge><div id=box></div><span id=text2>text</span></div>";
 
             var document = ParseDocument(sourceCode);
             Assert.IsNotNull(document);
@@ -350,9 +349,48 @@ em { font-style: italic !important; }
             Assert.AreEqual("80px", renderRoot.QuerySelector("#box").ComputedStyle.GetWidth());
             Assert.AreEqual("1em", renderRoot.QuerySelector("#box").SpecifiedStyle.GetHeight());
             Assert.AreEqual("80px", renderRoot.QuerySelector("#box").ComputedStyle.GetHeight());
+        }
 
-            Assert.AreEqual("", renderRoot.QuerySelector("#text3").SpecifiedStyle.GetLineHeight());
-            Assert.AreEqual("19.2px", renderRoot.QuerySelector("#text3").ComputedStyle.GetLineHeight());
+        [Test]
+        public void RenderLineHeight()
+        {
+            var sourceCode = @"<!doctype html>
+<head>
+<style>
+.xl { font-size: x-large; }
+</style>
+</head>
+<body>
+<div><span id=text1>text</span> <span class=xl id=text2>text</span></div>
+<div style='line-height: 1.5'><span id=text3>text</span> <span class=xl id=text4>text</span></div>
+<div style='line-height: 1.5em'><span class=xl id=text5>text</span></div>
+<div style='line-height: normal'><span id=text6>text</span></div>";
+
+            var document = ParseDocument(sourceCode);
+            Assert.IsNotNull(document);
+            var window = document.DefaultView;
+
+            var renderRoot = window.Render();
+            Assert.IsNotNull(renderRoot);
+
+            Assert.Multiple(() =>
+            {
+                Assert.AreEqual("", renderRoot.QuerySelector("#text1").SpecifiedStyle.GetLineHeight());
+                Assert.AreEqual("", renderRoot.QuerySelector("#text1").ComputedStyle.GetLineHeight());
+
+                Assert.AreEqual("", renderRoot.QuerySelector("#text2").SpecifiedStyle.GetLineHeight());
+                Assert.AreEqual("", renderRoot.QuerySelector("#text2").ComputedStyle.GetLineHeight());
+
+                Assert.AreEqual("", renderRoot.QuerySelector("#text3").SpecifiedStyle.GetLineHeight());
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text3").ComputedStyle.GetLineHeight());
+
+                Assert.AreEqual("", renderRoot.QuerySelector("#text4").SpecifiedStyle.GetLineHeight());
+                Assert.AreEqual("36px", renderRoot.QuerySelector("#text4").ComputedStyle.GetLineHeight());
+
+                Assert.AreEqual("24px", renderRoot.QuerySelector("#text5").ComputedStyle.GetLineHeight());
+
+                Assert.AreEqual("normal", renderRoot.QuerySelector("#text6").ComputedStyle.GetLineHeight());
+            });
         }
     }
 }
