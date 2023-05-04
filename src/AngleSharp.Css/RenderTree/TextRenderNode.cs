@@ -15,5 +15,7 @@ namespace AngleSharp.Css.RenderTree
         public INode Ref { get; }
 
         public IEnumerable<IRenderNode> Children => Enumerable.Empty<IRenderNode>();
+
+        public IRenderNode? Parent { get; set; }
     }
 }

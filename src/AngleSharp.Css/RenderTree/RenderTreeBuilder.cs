@@ -71,7 +71,17 @@ namespace AngleSharp.Css.RenderTree
                 computedStyle.SetDeclarations(new[] { lineHeightProperty });
             }
 
-            return new ElementRenderNode(reference, children, style, computedStyle);
+            var node = new ElementRenderNode(reference, children, style, computedStyle);
+            foreach (var child in children)
+            {
+                if (child is ElementRenderNode elementChild)
+                    elementChild.Parent = node;
+                else if (child is TextRenderNode textChild)
+                    textChild.Parent = node;
+                else
+                    throw new InvalidOperationException();
+            }
+            return node;
         }
 
         private IRenderNode RenderText(IText text) => new TextRenderNode(text);

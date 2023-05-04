@@ -18,5 +18,7 @@ namespace AngleSharp.Css.RenderTree
         /// References the contained render children.
         /// </summary>
         IEnumerable<IRenderNode> Children { get; }
+
+        IRenderNode? Parent { get; }
     }
 }

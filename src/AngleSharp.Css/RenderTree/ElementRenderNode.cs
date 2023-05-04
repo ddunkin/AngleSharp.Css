@@ -21,6 +21,8 @@ namespace AngleSharp.Css.RenderTree
 
         public IEnumerable<IRenderNode> Children { get; }
 
+        public IRenderNode? Parent { get; set; }
+
         public ICssStyleDeclaration SpecifiedStyle { get; }
 
         public ICssStyleDeclaration ComputedStyle { get; }
