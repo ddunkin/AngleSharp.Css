@@ -85,15 +85,19 @@ namespace AngleSharp.Css.RenderTree
                 {
                     value = new Length(absoluteLength.ToPixel(_device), Length.Unit.Px);
                 }
-                else if (value is Length { IsRelative: true } relativeLength)
+                else if (value is Length { IsRelative: true, Type: not Length.Unit.None } relativeLength)
                 {
                     var pixelValue = relativeLength.Type switch
                     {
-                        Length.Unit.None when name == PropertyNames.LineHeight => relativeLength.Value * fontSize,
                         Length.Unit.Em => relativeLength.Value * fontSize,
                         Length.Unit.Rem => relativeLength.Value * rootFontSize,
                         _ => relativeLength.ToPixel(_device),
                     };
+                    value = new Length(pixelValue, Length.Unit.Px);
+                }
+                else if (name == PropertyNames.LineHeight && value is Length { Type: Length.Unit.None } unitlessLineHeight)
+                {
+                    var pixelValue = unitlessLineHeight.Value * fontSize;
                     value = new Length(pixelValue, Length.Unit.Px);
                 }
 
