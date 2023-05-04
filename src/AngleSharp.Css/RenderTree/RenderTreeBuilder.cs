@@ -99,6 +99,18 @@ namespace AngleSharp.Css.RenderTree
                 {
                     value = new Length(absoluteLength.ToPixel(_device), Length.Unit.Px);
                 }
+                else if (value is Length { Type: Length.Unit.Percent } percentLength)
+                {
+                    if (name == PropertyNames.VerticalAlign)
+                    {
+                        var pixelValue = percentLength.Value / 100 * fontSize;
+                        value = new Length(pixelValue, Length.Unit.Px);
+                    }
+                    else
+                    {
+                        // TODO: compute for other properties that should be absolute
+                    }
+                }
                 else if (value is Length { IsRelative: true, Type: not Length.Unit.None } relativeLength)
                 {
                     var pixelValue = relativeLength.Type switch
