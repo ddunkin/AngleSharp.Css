@@ -135,33 +135,33 @@ namespace AngleSharp.Css
         /// Represents an integer object.
         /// https://developer.mozilla.org/en-US/docs/Web/CSS/integer
         /// </summary>
-        public static readonly IValueConverter OnlyIntegerConverter = new StructValueConverter<Length>(FromInteger(NumberParser.ParseInteger));
+        public static readonly IValueConverter OnlyIntegerConverter = new StructValueConverter<Number>(FromInteger(NumberParser.ParseInteger));
 
         /// <summary>
         /// Represents an integer object that is zero or greater.
         /// </summary>
-        public static readonly IValueConverter NaturalIntegerConverter = new StructValueConverter<Length>(FromInteger(NumberParser.ParseNaturalInteger));
+        public static readonly IValueConverter NaturalIntegerConverter = new StructValueConverter<Number>(FromInteger(NumberParser.ParseNaturalInteger));
 
         /// <summary>
         /// Represents an integer object that only allows values \in { 100, 200, ..., 900 }.
         /// </summary>
-        public static readonly IValueConverter WeightIntegerConverter = new StructValueConverter<Length>(FromInteger(NumberParser.ParseWeightInteger));
+        public static readonly IValueConverter WeightIntegerConverter = new StructValueConverter<Number>(FromInteger(NumberParser.ParseWeightInteger));
 
         /// <summary>
         /// Represents an integer object that is greater tha zero.
         /// </summary>
-        public static readonly IValueConverter PositiveIntegerConverter = new StructValueConverter<Length>(FromInteger(NumberParser.ParsePositiveInteger));
+        public static readonly IValueConverter PositiveIntegerConverter = new StructValueConverter<Number>(FromInteger(NumberParser.ParsePositiveInteger));
 
         /// <summary>
         /// Represents an integer object with 0 or 1.
         /// </summary>
-        public static readonly IValueConverter BinaryConverter = new StructValueConverter<Length>(FromInteger(NumberParser.ParseBinary));
+        public static readonly IValueConverter BinaryConverter = new StructValueConverter<Number>(FromInteger(NumberParser.ParseBinary));
 
         /// <summary>
         /// Represents a number object.
         /// https://developer.mozilla.org/en-US/docs/Web/CSS/number
         /// </summary>
-        public static readonly IValueConverter OnlyNumberConverter = new StructValueConverter<Length>(FromNumber(NumberParser.ParseNumber));
+        public static readonly IValueConverter OnlyNumberConverter = new StructValueConverter<Number>(FromNumber(NumberParser.ParseNumber));
 
         /// <summary>
         /// Represents a (calculated) number object.
@@ -196,7 +196,7 @@ namespace AngleSharp.Css
         /// <summary>
         /// Represents an number object that is zero or greater.
         /// </summary>
-        public static readonly IValueConverter NaturalNumberConverter = new StructValueConverter<Length>(FromNumber(NumberParser.ParseNaturalNumber));
+        public static readonly IValueConverter NaturalNumberConverter = new StructValueConverter<Number>(FromNumber(NumberParser.ParseNaturalNumber));
 
         /// <summary>
         /// Represents an color object (usually hex or name).
@@ -634,7 +634,7 @@ namespace AngleSharp.Css
         public static readonly IValueConverter AutoLengthOrPercentConverter = Or(
             LengthOrPercentConverter,
             Auto);
-        
+
         /// <summary>
         /// Represents a value for a width.
         /// </summary>
@@ -662,7 +662,7 @@ namespace AngleSharp.Css
             LengthOrPercentConverter,
             NumberConverter,
             Assign(CssKeywords.Normal, Length.Normal));
-        
+
         /// <summary>
         /// Represents a distance object or normal length.
         /// </summary>
@@ -736,13 +736,13 @@ namespace AngleSharp.Css
 		/// <summary>
 		/// Represents a converter for the StrokeMiterlimit enumeration.
 		/// </summary>
-		public static readonly IValueConverter StrokeMiterlimitConverter = new StructValueConverter<Length>(FromNumber(NumberParser.ParseGreaterOrEqualOneNumber));
+		public static readonly IValueConverter StrokeMiterlimitConverter = new StructValueConverter<Number>(FromNumber(NumberParser.ParseGreaterOrEqualOneNumber));
 
 		/// <summary>
 		/// Represents a ratio object.
 		/// https://developer.mozilla.org/en-US/docs/Web/CSS/ratio
 		/// </summary>
-		public static readonly IValueConverter RatioConverter = new StructValueConverter<Length>(FromNumber(NumberParser.ParseRatio));
+		public static readonly IValueConverter RatioConverter = new StructValueConverter<Number>(FromNumber(NumberParser.ParseRatio));
 
         /// <summary>
         /// Represents multiple shadow objects.
@@ -955,25 +955,25 @@ namespace AngleSharp.Css
             return null;
         };
 
-        private static Func<StringSource, Length?> FromInteger(Func<StringSource, Int32?> converter) => source =>
+        private static Func<StringSource, Number?> FromInteger(Func<StringSource, Int32?> converter) => source =>
         {
             var result = converter.Invoke(source);
 
             if (result.HasValue)
             {
-                return new Length(result.Value, Length.Unit.None);
+                return new Number(result.Value);
             }
 
             return null;
         };
 
-        private static Func<StringSource, Length?> FromNumber(Func<StringSource, Double?> converter) => source =>
+        private static Func<StringSource, Number?> FromNumber(Func<StringSource, Double?> converter) => source =>
         {
             var result = converter.Invoke(source);
 
             if (result.HasValue)
             {
-                return new Length(result.Value, Length.Unit.None);
+                return new Number(result.Value);
             }
 
             return null;
