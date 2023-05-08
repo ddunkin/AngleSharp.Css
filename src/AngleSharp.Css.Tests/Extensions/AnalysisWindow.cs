@@ -364,7 +364,8 @@ em { font-style: italic !important; }
 <div><span id=text1>text</span> <span class=xl id=text2>text</span></div>
 <div style='line-height: 1.5'><span id=text3>text</span> <span class=xl id=text4>text</span></div>
 <div style='line-height: 1.5em'><span class=xl id=text5>text</span></div>
-<div style='line-height: normal'><span id=text6>text</span></div>";
+<div style='line-height: normal'><span id=text6>text</span></div>
+<div style='font-size: 110%; line-height: 125%'><span id=text7>text</span></div>";
 
             var document = ParseDocument(sourceCode);
             Assert.IsNotNull(document);
@@ -390,6 +391,8 @@ em { font-style: italic !important; }
                 Assert.AreEqual("24px", renderRoot.QuerySelector("#text5").ComputedStyle.GetLineHeight());
 
                 Assert.AreEqual("normal", renderRoot.QuerySelector("#text6").ComputedStyle.GetLineHeight());
+
+                Assert.AreEqual("22px", renderRoot.QuerySelector("#text7").ComputedStyle.GetLineHeight());
             });
         }
 

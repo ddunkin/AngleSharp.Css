@@ -111,7 +111,7 @@ namespace AngleSharp.Css.RenderTree
                 }
                 else if (value is Length { Type: Length.Unit.Percent } percentLength)
                 {
-                    if (name == PropertyNames.VerticalAlign)
+                    if (name == PropertyNames.VerticalAlign || name == PropertyNames.LineHeight)
                     {
                         var pixelValue = percentLength.Value / 100 * fontSize;
                         value = new Length(pixelValue, Length.Unit.Px);
