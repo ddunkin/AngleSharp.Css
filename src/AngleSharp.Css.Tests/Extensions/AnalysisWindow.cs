@@ -1,3 +1,5 @@
+using AngleSharp.Xml.Parser;
+
 namespace AngleSharp.Css.Tests.Extensions
 {
     using AngleSharp.Css.Dom;
@@ -435,6 +437,24 @@ em { font-style: italic !important; }
                 Assert.AreEqual("24px", renderRoot.QuerySelector("#text7").ComputedStyle.GetFontSize());
                 Assert.AreEqual("16px", renderRoot.QuerySelector("#text8").ComputedStyle.GetFontSize());
             });
+        }
+
+        [Test]
+        public void ComputeXhtmlElementStyle()
+        {
+            var sourceCode = "<!DOCTYPE html><html xmlns=\"http://www.w3.org/1999/xhtml\"><body><div style=\"color: red\">red text</div></body></html>";
+
+            var parser = new XmlParser(new(), BrowsingContext.New(Configuration.Default.WithCss().WithRenderDevice()));
+            var document = parser.ParseDocument(sourceCode);
+            Assert.IsNotNull(document);
+            var window = document.DefaultView;
+
+            var element = document.QuerySelector("div");
+            Assert.IsNotNull(element);
+
+            var style = window.GetComputedStyle(element);
+            Assert.IsNotNull(style);
+            Assert.AreEqual("rgba(255, 0, 0, 1)", style.GetColor());
         }
     }
 }

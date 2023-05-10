@@ -85,7 +85,7 @@ namespace AngleSharp.Css
                 computedStyle.SetDeclarations(inlineStyle);
             }
 
-            if (element is IHtmlElement || element is ISvgElement)
+            if (element is IHtmlElement || element is ISvgElement || element.NamespaceUri == NamespaceNames.HtmlUri)
             {
                 computedStyle.SetDeclarations(element.GetStyle());
             }
