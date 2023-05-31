@@ -9,7 +9,7 @@ namespace AngleSharp.Css.Declarations
 
     static class PaddingInlineDeclaration
     {
-        public static String Name = PropertyNames.MarginBlock;
+        public static String Name = PropertyNames.PaddingInline;
 
         public static IValueConverter Converter = new PaddingInlineAggregator();
 
