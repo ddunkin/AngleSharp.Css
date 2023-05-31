@@ -7,7 +7,7 @@
     using System.Collections.Generic;
 
     /// <summary>
-    /// Represents a periodic CSS value.
+    /// Represents a flow relative CSS value.
     /// </summary>
     public class CssFlowRelativeValue<T> : ICssMultipleValue
         where T : ICssValue
@@ -21,7 +21,7 @@
         #region ctor
 
         /// <summary>
-        /// Creates a new CSS periodic value container.
+        /// Creates a new CSS flow relative value container.
         /// </summary>
         /// <param name="values">The items to contain.</param>
         public CssFlowRelativeValue(T[] values = null)
@@ -98,7 +98,7 @@
     }
 
     /// <summary>
-    /// Represents a periodic CSS value.
+    /// Represents a flow relative CSS value.
     /// </summary>
     sealed class CssFlowRelativeValue : CssFlowRelativeValue<ICssValue>
     {

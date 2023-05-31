@@ -25,7 +25,7 @@ namespace AngleSharp.Css.Declarations
 
         sealed class PaddingBlockAggregator : IValueAggregator, IValueConverter
         {
-            private static readonly IValueConverter converter = Or(AutoLengthOrPercentConverter, AssignInitial(Length.Zero)).Periodic();
+            private static readonly IValueConverter converter = Or(AutoLengthOrPercentConverter, AssignInitial(Length.Zero)).FlowRelative();
 
             public ICssValue Convert(StringSource source) => converter.Convert(source);
 
@@ -44,9 +44,9 @@ namespace AngleSharp.Css.Declarations
 
             public ICssValue[] Split(ICssValue value)
             {
-                if (value is CssFlowRelativeValue dualLength)
+                if (value is CssFlowRelativeValue flowRelative)
                 {
-                    return new[] { dualLength.Start, dualLength.End };
+                    return new[] { flowRelative.Start, flowRelative.End };
                 }
 
                 return null;

@@ -960,7 +960,7 @@ namespace AngleSharp.Css
         /// <summary>
         /// The padding-block declaration.
         /// </summary>
-        public static readonly String PaddingBlock = "margin-block";
+        public static readonly String PaddingBlock = "padding-block";
 
         /// <summary>
         /// The padding-block-end declaration.
@@ -975,7 +975,7 @@ namespace AngleSharp.Css
         /// <summary>
         /// The padding-inline declaration.
         /// </summary>
-        public static readonly String PaddingInline = "margin-block";
+        public static readonly String PaddingInline = "padding-inline";
 
         /// <summary>
         /// The padding-inline-end declaration.
