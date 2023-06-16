@@ -2,12 +2,12 @@
 {
     using System;
 
-    public interface ITestee
+    public interface ITestee<TInput>
     {
         String Name { get; }
 
         Type Library { get; }
 
-        void Run(String argument);
+        void Run(TInput argument);
     }
 }

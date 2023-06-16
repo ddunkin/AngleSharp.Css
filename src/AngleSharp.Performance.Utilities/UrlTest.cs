@@ -5,7 +5,7 @@
     using System.Net.Http;
     using System.Threading.Tasks;
 
-    sealed class UrlTest : ITest
+    sealed class UrlTest : ITest<String>
     {
         static readonly HttpClient http = new HttpClient();
 

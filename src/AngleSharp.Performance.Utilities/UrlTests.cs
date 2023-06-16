@@ -6,18 +6,18 @@
 
     public sealed class UrlTests
     {
-        readonly List<ITest> _tests;
+        readonly List<ITest<String>> _tests;
         readonly Boolean _buffer;
         readonly String _extension;
 
         public UrlTests(String extension, Boolean withBuffer = true)
         {
-            _tests = new List<ITest>();
+            _tests = new List<ITest<String>>();
             _buffer = withBuffer;
             _extension = extension;
         }
 
-        public List<ITest> Tests => _tests;
+        public List<ITest<String>> Tests => _tests;
 
         public async Task<UrlTests> Include(params String[] urls)
         {

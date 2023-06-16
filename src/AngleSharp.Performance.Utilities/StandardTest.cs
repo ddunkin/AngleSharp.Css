@@ -2,14 +2,14 @@
 {
     using System;
 
-    sealed class StandardTest : ITest
+    sealed class StandardTest<TInput> : ITest<TInput>
     {
-        public StandardTest(String value)
-            : this(value, value)
+        public StandardTest(TInput value)
+            : this(value.ToString(), value)
         {
         }
 
-        public StandardTest(String name, String source)
+        public StandardTest(String name, TInput source)
         {
             Name = name;
             Source = source;
@@ -21,7 +21,7 @@
             private set;
         }
 
-        public String Source
+        public TInput Source
         {
             get;
             private set;

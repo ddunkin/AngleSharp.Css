@@ -5,18 +5,18 @@
     using System.Diagnostics;
     using System.Linq;
 
-    public class TestSuite
+    public class TestSuite<TInput>
     {
-        readonly List<TestResult> _results;
-        readonly IEnumerable<ITest> _tests;
-        readonly IEnumerable<ITestee> _parsers;
+        readonly List<TestResult<TInput>> _results;
+        readonly IEnumerable<ITest<TInput>> _tests;
+        readonly IEnumerable<ITestee<TInput>> _parsers;
         readonly IOutput _output;
         readonly IWarmup _warmup;
 
         Int32 _repeats;
         Int32 _reruns;
 
-        public TestSuite(IEnumerable<ITestee> parsers, IEnumerable<ITest> tests, IOutput output, IWarmup warmup = null)
+        public TestSuite(IEnumerable<ITestee<TInput>> parsers, IEnumerable<ITest<TInput>> tests, IOutput output, IWarmup warmup = null)
         {
             _reruns = 1;
             _repeats = 10;
@@ -24,7 +24,7 @@
             _tests = tests;
             _output = output;
             _warmup = warmup;
-            _results = new List<TestResult>(parsers.Join(tests, m => 0, m => 0, (a, b) => new TestResult(b, a)));
+            _results = new List<TestResult<TInput>>(parsers.Join(tests, m => 0, m => 0, (a, b) => new TestResult<TInput>(b, a)));
         }
 
         public Int32 NumberOfRepeats
@@ -39,9 +39,9 @@
             set => _reruns = value;
         }
 
-        internal IEnumerable<ITest> Tests => _tests;
+        internal IEnumerable<ITest<TInput>> Tests => _tests;
 
-        internal IEnumerable<ITestee> Parsers => _parsers;
+        internal IEnumerable<ITestee<TInput>> Parsers => _parsers;
 
         internal IOutput Console => _output;
 
