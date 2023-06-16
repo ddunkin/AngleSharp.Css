@@ -1,3 +1,19 @@
+# 1.0.0
+
+Released on tbd.
+
+- Updated to use AngleSharp 1.0
+- Updated media parsing to media L4 spec (#133)
+- Fixed issue when updating shorthands with invalid values (#129)
+- Fixed issue with appended EOF character in `CssText` (#123)
+- Fixed missing semicolon in `@page` rule (#135)
+- Fixed integer serialization of keyframe stops (#128)
+- Fixed ordering of rows and columns in `grid` and `grid-gap` (#137)
+- Fixed inclusion of CSS from stylesheets (#116, #140)
+- Added further compactification of CSS tuples (#89, #93)
+- Added support for 8-digit hex color codes (#132)
+- Added more CSSOM possibilities and helpers (#6)
+
 # 0.17.0
 
 Released on Sunday, January 15 2023.
