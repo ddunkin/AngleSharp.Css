@@ -3,7 +3,7 @@
     using Alba.CsCss.Style;
     using System;
 
-    class CsCssParser : ITestee
+    class CsCssParser : ITestee<String>
     {
         public String Name => "CsCss";
 
@@ -17,8 +17,8 @@
             {
                 parser.ParseSheet(source, new Uri("http://localhost/foo.css"), new Uri("http://localhost"));
             }
-            catch 
-            { 
+            catch
+            {
                 // May crash otherwise if invalid input detected ...
             }
         }

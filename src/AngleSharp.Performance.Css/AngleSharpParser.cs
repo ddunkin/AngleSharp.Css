@@ -4,7 +4,7 @@ namespace AngleSharp.Performance.Css
     using AngleSharp.Css.Parser;
     using System;
 
-    class AngleSharpParser : ITestee
+    class AngleSharpParser : ITestee<String>
     {
         private static readonly CssParserOptions options = new CssParserOptions
         {

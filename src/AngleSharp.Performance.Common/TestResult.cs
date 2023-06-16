@@ -4,9 +4,9 @@
     using System.Collections.Generic;
     using System.Linq;
 
-    public class TestResult
+    public class TestResult<TInput>
     {
-        public TestResult(ITest test, ITestee parser)
+        public TestResult(ITest<TInput> test, ITestee<TInput> parser)
         {
             Test = test;
             Parser = parser;
@@ -39,13 +39,13 @@
             }
         }
 
-        public ITest Test
+        public ITest<TInput> Test
         {
             get;
             private set;
         }
 
-        public ITestee Parser
+        public ITestee<TInput> Parser
         {
             get;
             private set;

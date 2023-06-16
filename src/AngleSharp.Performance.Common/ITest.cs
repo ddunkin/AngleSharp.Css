@@ -2,10 +2,10 @@
 {
     using System;
 
-    public interface ITest
+    public interface ITest<TInput>
     {
         String Name { get; }
 
-        String Source { get; }
+        TInput Source { get; }
     }
 }

@@ -8,7 +8,7 @@ namespace AngleSharp.Performance.Css
         static void Main(String[] args)
         {
             var stylesheets = new UrlTests(
-                extension: ".css", 
+                extension: ".css",
                 withBuffer: true);
 
             stylesheets.Include(
@@ -26,14 +26,14 @@ namespace AngleSharp.Performance.Css
                 "http://style.aliunicorn.com/css/6v/??apollo/core/core-ws-responsive.css,run/wholesale/font-v1.css,run/site/en/common/header/header-v150213.css,run/site/en/common/bottombar/bottom-bar.css?t=145f12b3e_104c763f9a",
                 "http://www.florian-rappl.de/Content/style?v=o2O40dFmfq2JG0tQyfQctozyaA9IcUQxq9b6x16JOKw1").Wait();
 
-            var parsers = new List<ITestee>
+            var parsers = new List<ITestee<String>>
             {
                 new AngleSharpParser(),
                 new ExCssParser(),
                 new CsCssParser(),
             };
 
-            var testsuite = new TestSuite(parsers, stylesheets.Tests, new Output(), new Warmup())
+            var testsuite = new TestSuite<String>(parsers, stylesheets.Tests, new Output(), new Warmup())
             {
                 NumberOfRepeats = 5,
                 NumberOfReRuns = 1,

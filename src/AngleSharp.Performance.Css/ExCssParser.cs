@@ -3,7 +3,7 @@
     using System;
     using ExCSS;
 
-    class ExCssParser : ITestee
+    class ExCssParser : ITestee<String>
     {
         public String Name => "ExCSS";
 
