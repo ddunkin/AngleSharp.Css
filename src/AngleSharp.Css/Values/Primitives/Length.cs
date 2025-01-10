@@ -287,6 +287,10 @@ namespace AngleSharp.Css.Values
                     return _value * 96.0 / 72.0;
                 case Unit.Cm: // 1 cm = 50/127 in
                     return _value * 50.0 * 96.0 / 127.0;
+                case Unit.Ex:
+                    CheckForValidRenderDimensionsForFont(renderDimensions);
+                    // 1ex is the x-height of the font, or half of 1em.
+                    return _value * 0.5 * renderDimensions.FontSize;
                 case Unit.Px: // 1 px = 1/96 in
                     return _value;
                 case Unit.Rem:
@@ -309,7 +313,7 @@ namespace AngleSharp.Css.Values
                     CheckForValidRenderDimensions(renderDimensions, RenderMode.Vertical);
                     return _value * 0.01 * Math.Min(renderDimensions.RenderHeight, renderDimensions.RenderWidth);
                 default:
-                    throw new InvalidOperationException("Unsupported unit cannot be converted.");
+                    throw new InvalidOperationException($"Unsupported unit '{_unit}' cannot be converted.");
             }
         }
 
